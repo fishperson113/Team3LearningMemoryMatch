@@ -28,12 +28,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject timerPrefab;
     private Timer timer;
 
+    [SerializeField] private GameObject scorePrefab;
+    private ScoreSystem scoreSystem;
 
     void Awake()
     {
         puzzles = Resources.LoadAll<Sprite>("Sprites");
         timer = timerPrefab.GetComponent<Timer>();
-   
+        scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
+
     }
 
  
@@ -45,6 +48,8 @@ public class GameController : MonoBehaviour
         Shuffle(gamePuzzles);
         gameGuesses = gamePuzzles.Count / 2;
         timer.CheckCountDown();
+        scoreSystem.UpdateScoreText();
+
     }
 
    
@@ -146,6 +151,8 @@ public class GameController : MonoBehaviour
             btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
 
             CheckIfTheGameisFinished();
+
+            scoreSystem.AddScore(10);
         }
         else
         {
@@ -154,6 +161,8 @@ public class GameController : MonoBehaviour
             StartCoroutine(RotateCard(btns[firstGuessIndex], bgImage));
             StartCoroutine(RotateCard(btns[secondGuessIndex], bgImage));
         }
+
+
 
         yield return new WaitForSeconds(.5f);
 
