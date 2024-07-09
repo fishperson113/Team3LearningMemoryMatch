@@ -4,22 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
     [SerializeField]
     private Sprite bgImage;
+    private Sprite[] puzzles;
+    private List<Sprite> gamePuzzles = new List<Sprite>();
+    private List<Button> btns = new List<Button>();
 
-    public Sprite[] puzzles;
-
-    public List<Sprite> gamePuzzles = new List<Sprite>();
-
-    public List<Button> btns = new List<Button>();
-
+    private int currentScore;
     private bool firstGuess, secondGuess;
-
-    private int countGuesses;
-    private int countCorrectGuesses;
-    private int gameGuesses;
 
     private int firstGuessIndex, secondGuessIndex;
 
@@ -27,29 +21,29 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private GameObject timerPrefab;
     private Timer timer;
-
     [SerializeField] private GameObject scorePrefab;
     private ScoreSystem scoreSystem;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         puzzles = Resources.LoadAll<Sprite>("Sprites");
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
-
     }
 
- 
+
     void Start()
     {
+        currentScore = 0;
+        UpdateScoreText();
+
         GetButton();
         AddListeners();
         AddGamePuzzles();
-        Shuffle(gamePuzzles);
-        gameGuesses = gamePuzzles.Count / 2;
-        timer.CheckCountDown();
-        scoreSystem.UpdateScoreText();
 
+        Utility.Shuffle(gamePuzzles);
+        timer.CountDown();
     }
 
    
@@ -89,8 +83,8 @@ public class GameController : MonoBehaviour
             btn.onClick.AddListener(() => PickAPuzzle());
         }
     }
-
-    public void PickAPuzzle()
+    
+    void PickAPuzzle()
     {
         if (!firstGuess)
         {
@@ -100,7 +94,7 @@ public class GameController : MonoBehaviour
 
             firstGuessPuzzle = gamePuzzles[firstGuessIndex].name;
 
-            StartCoroutine(RotateCard(btns[firstGuessIndex], gamePuzzles[firstGuessIndex]));
+            StartCoroutine(CardRotator.RotateCard(btns[firstGuessIndex], gamePuzzles[firstGuessIndex]));
         }
         else if (!secondGuess)
         {
@@ -110,29 +104,9 @@ public class GameController : MonoBehaviour
 
             secondGuessPuzzle = gamePuzzles[secondGuessIndex].name;
 
-            StartCoroutine(RotateCard(btns[secondGuessIndex], gamePuzzles[secondGuessIndex]));
-
-            countGuesses++;
+            StartCoroutine(CardRotator.RotateCard(btns[secondGuessIndex], gamePuzzles[secondGuessIndex]));
 
             StartCoroutine(CheckIfThePuzzlesMatch());
-        }
-    }
-
-    IEnumerator RotateCard(Button btn, Sprite newImage)
-    {
-        // Rotate the card to 90 degrees over 0.25 seconds
-        for (float i = 0; i <= 0.25f; i += Time.deltaTime)
-        {
-            btn.transform.rotation = Quaternion.Euler(0, 180 * i / 0.25f, 0);
-            yield return null;
-        }
-        btn.image.sprite = newImage;
-
-        // Complete the rotation to 180 degrees over 0.25 seconds
-        for (float i = 0; i <= 0.25f; i += Time.deltaTime)
-        {
-            btn.transform.rotation = Quaternion.Euler(0, 180 + 180 * i / 0.25f, 0);
-            yield return null;
         }
     }
 
@@ -150,16 +124,17 @@ public class GameController : MonoBehaviour
             btns[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
             btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
 
+            AddScore(10);
+
             CheckIfTheGameisFinished();
 
-            scoreSystem.AddScore(10);
         }
         else
         {
             yield return new WaitForSeconds(.5f);
 
-            StartCoroutine(RotateCard(btns[firstGuessIndex], bgImage));
-            StartCoroutine(RotateCard(btns[secondGuessIndex], bgImage));
+            StartCoroutine(CardRotator.RotateCard(btns[firstGuessIndex], bgImage));
+            StartCoroutine(CardRotator.RotateCard(btns[secondGuessIndex], bgImage));
         }
 
 
@@ -168,27 +143,26 @@ public class GameController : MonoBehaviour
 
         firstGuess = secondGuess = false;
     }
-
-    void CheckIfTheGameisFinished()
+    void AddScore(int score)
     {
-        countCorrectGuesses++;
-
-        if (countCorrectGuesses == gameGuesses)
-        {
-            Debug.Log("Game Finished!");
-            Debug.Log("It took you " + countGuesses + " many guess(es) to finish the game");
-        }
+        currentScore += score;
+        UpdateScoreText();
     }
 
-    void Shuffle(List<Sprite> List)
+    void UpdateScoreText()
     {
-        for (int i = 0; i < List.Count; i++)
+        scoreSystem.UpdateScoreText(currentScore);
+    }
+    void CheckIfTheGameisFinished()
+    {
+        foreach (Button btn in btns)
         {
-            Sprite temp = List[i];
-            int randomIndex = Random.Range(i, List.Count);
-            List[i] = List[randomIndex];
-            List[randomIndex] = temp;
+            if (btn.interactable)
+            {
+                return; 
+            }
         }
+        Debug.Log("Game Finished!");
     }
 
 }

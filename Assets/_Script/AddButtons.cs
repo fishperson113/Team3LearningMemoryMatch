@@ -14,9 +14,8 @@ public class AddButtons : MonoBehaviour
     {
         for(int i=0;i<8;i++)
         {
-            GameObject button = Instantiate(btn);
+            GameObject button = Instantiate(btn,puzzleField);
             button.name = "" + i;
-            button.transform.SetParent(puzzleField, false);
         }
     }
 }

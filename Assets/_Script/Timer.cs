@@ -9,9 +9,9 @@ public class Timer : MonoBehaviour
 {
     // Timer variables
     public TextMeshProUGUI timerText;
-    [SerializeField] private float gameTime; // 60 seconds countdown timer
+    [SerializeField] private float gameTime;
 
-    public void CheckCountDown()
+    public void CountDown()
     {
         StartCoroutine(StartCountdown());
     }

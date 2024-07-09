@@ -8,24 +8,10 @@ using Unity.VisualScripting;
 public class ScoreSystem : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
-    public int score;
 
-    void Start()
-    {
-        score = 0; 
-    }
-
-    public void AddScore(int points)
-    {
-        score += points;
-    }
-    public void UpdateScoreText()
+    public void UpdateScoreText(int score)
     {
         scoreText.text = "Score: " + score.ToString();
     }
 
-     void Update()
-    {
-        UpdateScoreText(); 
-    }
 }
