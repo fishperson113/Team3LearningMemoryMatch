@@ -30,7 +30,7 @@ public class Timer : MonoBehaviour
             yield return null;
         }
         isGameOver = true;
-        Destroy(this.gameObject);
+        timerText.text = "00:00";
     }
     public int getTimePassed()
     {
