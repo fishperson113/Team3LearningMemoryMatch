@@ -24,12 +24,18 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameObject scorePrefab;
     private ScoreSystem scoreSystem;
 
+    [SerializeField] private GameObject scoreAchievedPrefab;
+    private ScoreAchieved scoreAchieved;
+
+    [SerializeField] private GameObject winAnnouncement;
+
     protected override void Awake()
     {
         base.Awake();
         puzzles = Resources.LoadAll<Sprite>("Sprites");
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
+        scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
     }
 
 
@@ -44,6 +50,7 @@ public class GameController : Singleton<GameController>
 
         Utility.Shuffle(gamePuzzles);
         timer.CountDown();
+        winAnnouncement.SetActive(false);
     }
 
    
@@ -153,6 +160,7 @@ public class GameController : Singleton<GameController>
     {
         scoreSystem.UpdateScoreText(currentScore);
     }
+    
     void CheckIfTheGameisFinished()
     {
         foreach (Button btn in btns)
@@ -163,6 +171,9 @@ public class GameController : Singleton<GameController>
             }
         }
         Debug.Log("Game Finished!");
+        winAnnouncement.SetActive(true);
+        scoreAchieved.ScoreWasAchieved(currentScore);
     }
+   
 
 }
