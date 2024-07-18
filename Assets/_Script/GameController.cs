@@ -27,10 +27,16 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameObject scoreAchievedPrefab;
     private ScoreAchieved scoreAchieved;
 
+    [SerializeField] private GameObject GameOverScoreAchievedPrefab;
+    private ScoreAchieved GameOverScoreAchieved;
+
     [SerializeField] private GameObject timePassedPrefab;
     private TimePassed TimeHasPassed;
 
     [SerializeField] private GameObject winAnnouncement;
+
+    [SerializeField] private GameObject GameOverScreen;
+    
 
     protected override void Awake()
     {
@@ -40,6 +46,7 @@ public class GameController : Singleton<GameController>
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
         scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
         TimeHasPassed = timePassedPrefab.GetComponent<TimePassed>();
+        GameOverScoreAchieved = GameOverScoreAchievedPrefab.GetComponent<ScoreAchieved>();
     }
 
 
@@ -55,6 +62,7 @@ public class GameController : Singleton<GameController>
         Utility.Shuffle(gamePuzzles);
         timer.CountDown();
         winAnnouncement.SetActive(false);
+        GameOverScreen.SetActive(false);
     }
 
    
@@ -178,11 +186,25 @@ public class GameController : Singleton<GameController>
         winAnnouncement.SetActive(true);
         winScreen();
     }        
-    
+       
+
     void winScreen()
     {
         Time.timeScale = 0f;
         scoreAchieved.ScoreWasAchieved(currentScore);
         TimeHasPassed.UpdateTimePassed(timer.getTimePassed());
-    }    
+    }
+
+    void Update()
+    {
+        if (timer.checkGameOver())
+        {
+            Time.timeScale = 0f;
+            if(GameOverScreen != null)
+            {
+               GameOverScreen.SetActive(true);
+               GameOverScoreAchieved.ScoreWasAchieved(currentScore);
+            }          
+        }  
+    }
 }
