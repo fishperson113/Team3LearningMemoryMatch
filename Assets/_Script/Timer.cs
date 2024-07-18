@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
     // Timer variables
     public TextMeshProUGUI timerText;
     [SerializeField] private float gameTime;
-
+    private int TimePassed;
     public void CountDown()
     {
         StartCoroutine(StartCountdown());
@@ -24,11 +24,16 @@ public class Timer : MonoBehaviour
             int minutes = Mathf.FloorToInt(gameTime / 60F);
             int seconds = Mathf.FloorToInt(gameTime % 60F);
             timerText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+            TimePassed = 60 - seconds;
             yield return null;
         }
         Destroy(this.gameObject);
         GameOver();
     }
+    public int getTimePassed()
+    {
+        return TimePassed;
+    }    
 
     void GameOver()
     {

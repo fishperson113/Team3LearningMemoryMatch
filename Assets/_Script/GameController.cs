@@ -27,6 +27,9 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameObject scoreAchievedPrefab;
     private ScoreAchieved scoreAchieved;
 
+    [SerializeField] private GameObject timePassedPrefab;
+    private TimePassed TimeHasPassed;
+
     [SerializeField] private GameObject winAnnouncement;
 
     protected override void Awake()
@@ -36,6 +39,7 @@ public class GameController : Singleton<GameController>
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
         scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
+        TimeHasPassed = timePassedPrefab.GetComponent<TimePassed>();
     }
 
 
@@ -160,20 +164,25 @@ public class GameController : Singleton<GameController>
     {
         scoreSystem.UpdateScoreText(currentScore);
     }
-    
+
     void CheckIfTheGameisFinished()
     {
         foreach (Button btn in btns)
         {
             if (btn.interactable)
             {
-                return; 
+                return;
             }
         }
         Debug.Log("Game Finished!");
         winAnnouncement.SetActive(true);
+        winScreen();
+    }        
+    
+    void winScreen()
+    {
+        Time.timeScale = 0f;
         scoreAchieved.ScoreWasAchieved(currentScore);
-    }
-   
-
+        TimeHasPassed.UpdateTimePassed(timer.getTimePassed());
+    }    
 }
