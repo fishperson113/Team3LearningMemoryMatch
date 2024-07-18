@@ -40,7 +40,7 @@ public class GameController : Singleton<GameController>
 
     protected override void Awake()
     {
-    //  base.Awake();
+        //base.Awake();
         puzzles = Resources.LoadAll<Sprite>("Sprites");
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
@@ -199,7 +199,7 @@ public class GameController : Singleton<GameController>
     {
         if (timer.checkGameOver())
         {
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             if(GameOverScreen != null)
             {
                GameOverScreen.SetActive(true);
