@@ -10,6 +10,8 @@ public class Timer : MonoBehaviour
     // Timer variables
     public TextMeshProUGUI timerText;
     [SerializeField] private float gameTime;
+    private int TimePassed;
+    private bool isGameOver = false;
 
     public void CountDown()
     {
@@ -24,16 +26,19 @@ public class Timer : MonoBehaviour
             int minutes = Mathf.FloorToInt(gameTime / 60F);
             int seconds = Mathf.FloorToInt(gameTime % 60F);
             timerText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+            TimePassed = 60 - seconds;
             yield return null;
         }
-        Destroy(this.gameObject);
-        GameOver();
+        isGameOver = true;
+        timerText.text = "00:00";
     }
-
-    void GameOver()
+    public int getTimePassed()
     {
-        Debug.Log("Game Over!");
-        // Optionally, reload the scene or show a game over screen
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        return TimePassed;
+    }    
+
+    public bool checkGameOver()
+    {
+        return isGameOver == true;
     }
 }

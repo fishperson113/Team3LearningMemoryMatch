@@ -24,17 +24,34 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameObject scorePrefab;
     private ScoreSystem scoreSystem;
 
+    [SerializeField] private GameObject scoreAchievedPrefab;
+    private ScoreAchieved scoreAchieved;
+
+    [SerializeField] private GameObject GameOverScoreAchievedPrefab;
+    private ScoreAchieved GameOverScoreAchieved;
+
+    [SerializeField] private GameObject timePassedPrefab;
+    private TimePassed TimeHasPassed;
+
+    [SerializeField] private GameObject winAnnouncement;
+
+    [SerializeField] private GameObject GameOverScreen;
+    
+
     protected override void Awake()
     {
         base.Awake();
         puzzles = Resources.LoadAll<Sprite>("Sprites");
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
+        scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
+        TimeHasPassed = timePassedPrefab.GetComponent<TimePassed>();
+        GameOverScoreAchieved = GameOverScoreAchievedPrefab.GetComponent<ScoreAchieved>();
     }
 
 
     void Start()
-    {
+    { 
         currentScore = 0;
         UpdateScoreText();
 
@@ -44,6 +61,8 @@ public class GameController : Singleton<GameController>
 
         Utility.Shuffle(gamePuzzles);
         timer.CountDown();
+        winAnnouncement.SetActive(false);
+        GameOverScreen.SetActive(false);
     }
 
    
@@ -153,16 +172,39 @@ public class GameController : Singleton<GameController>
     {
         scoreSystem.UpdateScoreText(currentScore);
     }
+
     void CheckIfTheGameisFinished()
     {
         foreach (Button btn in btns)
         {
             if (btn.interactable)
             {
-                return; 
+                return;
             }
         }
         Debug.Log("Game Finished!");
+        winAnnouncement.SetActive(true);
+        winScreen();
+    }        
+       
+
+    void winScreen()
+    {
+        Time.timeScale = 0f;
+        scoreAchieved.ScoreWasAchieved(currentScore);
+        TimeHasPassed.UpdateTimePassed(timer.getTimePassed());
     }
 
+    void Update()
+    {
+        if (timer.checkGameOver())
+        {
+            //Time.timeScale = 0f;
+            if(GameOverScreen != null)
+            {
+               GameOverScreen.SetActive(true);
+               GameOverScoreAchieved.ScoreWasAchieved(currentScore);
+            }          
+        }  
+    }
 }
