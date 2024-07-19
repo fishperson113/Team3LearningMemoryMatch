@@ -309,6 +309,7 @@ MonoBehaviour:
   timePassedPrefab: {fileID: 587730469}
   winAnnouncement: {fileID: 2433717054062263219}
   GameOverScreen: {fileID: 3651831555147578938}
+  gridController: {fileID: 903418639}
 --- !u!1 &903418634
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +742,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1018469919, guid: 59b0d5bd3fb6e1f4aa8210ccea9e623c, type: 3}
+    - target: {fileID: 2960495824167613209, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 67
+      objectReference: {fileID: 0}
     - target: {fileID: 3203903615660022680, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
       propertyPath: m_Name
       value: YouWinText
@@ -757,6 +762,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Replay
       objectReference: {fileID: 0}
+    - target: {fileID: 4507869022827097740, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4583117802758574256, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -769,6 +778,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 756916213, guid: 59b0d5bd3fb6e1f4aa8210ccea9e623c, type: 3}
+    - target: {fileID: 6171080989691766176, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
+      propertyPath: m_text
+      value: 'Score: 0'
+      objectReference: {fileID: 0}
     - target: {fileID: 7768686614861122077, guid: 8f98a596c2ec9c14a8e90299de0e862e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1183,11 +1196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6186853858345865567, guid: 34c60855167b1b347b7b052edaa66047, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 490
+      value: 569
       objectReference: {fileID: 0}
     - target: {fileID: 6186853858345865567, guid: 34c60855167b1b347b7b052edaa66047, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 237
+      value: 215
       objectReference: {fileID: 0}
     - target: {fileID: 7895254676772574088, guid: 34c60855167b1b347b7b052edaa66047, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1246,6 +1259,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2497553911205338171, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 67
+      objectReference: {fileID: 0}
     - target: {fileID: 3100937232316339941, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1274,6 +1291,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 756916213, guid: 59b0d5bd3fb6e1f4aa8210ccea9e623c, type: 3}
+    - target: {fileID: 6545641055932071801, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
+      propertyPath: m_text
+      value: 'Score: 0'
+      objectReference: {fileID: 0}
     - target: {fileID: 8936531830433477636, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

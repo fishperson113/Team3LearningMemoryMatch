@@ -8,9 +8,9 @@ public class GridController : MonoBehaviour
     private GridLayoutGroup gridLayoutGroup;
 
     [SerializeField]
-    private int rows=2;
+    private int rows;
     [SerializeField]
-    private int columns=4;
+    private int columns;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class GridController : MonoBehaviour
         {
             gridLayoutGroup.constraintCount = rows;
         }
-        else if(rows==0|| columns == 0)
+        else if (rows == 0|| columns == 0)
         {
             Debug.LogWarning("Please set the GridLayoutGroup constraint to either FixedColumnCount or FixedRowCount.");
         }
@@ -44,7 +44,7 @@ public class GridController : MonoBehaviour
     {
         columns = newColumn;
         UpdateGrid();
-    }
+    } 
     public int GetRows()
     {
         return rows;

@@ -235,6 +235,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: CancelButton2
+      rect:
+        serializedVersion: 2
+        x: 1697
+        y: 175
+        width: 173
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c33dc2f966658aa4589799840c26262f
+      internalID: 2121212923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -246,6 +267,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      CancelButton2: 2121212923
       Exit_Button: 944321250
       Home_Button: -1491292156
       Level_Button: 1277236238

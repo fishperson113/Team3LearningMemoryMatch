@@ -202,7 +202,7 @@ TextureImporter:
         width: 439
         height: 482
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 30}
       outline: []
       physicsShape: []
@@ -210,6 +210,48 @@ TextureImporter:
       bones: []
       spriteID: e31a90f39493b1e4593cdbc75332f8e4
       internalID: -1799212533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ModeSelectrorPanel
+      rect:
+        serializedVersion: 2
+        x: 2113
+        y: 3175
+        width: 1663
+        height: 583
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 30, y: 0, z: 18, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08f78959a57feed44ae4df365979f933
+      internalID: -1749418069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ModeSelector
+      rect:
+        serializedVersion: 2
+        x: 2155
+        y: 261
+        width: 1602
+        height: 574
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f49267eae19fe849ba63d810d9f0aab
+      internalID: -835434423
       vertices: []
       indices: 
       edges: []
@@ -226,6 +268,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Home_Button: 756916213
+      ModeSelector: -835434423
+      ModeSelectrorPanel: -1749418069
       PauseBtn: 914391079
       PauseBtn2: -1799212533
       Reset__Button: -1018469919

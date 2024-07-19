@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+public enum GameMode
+{
+    Casual,
+    Custom
+}
 public class GameController : Singleton<GameController>
 {
-    [SerializeField]
-    private Sprite bgImage;
+    [SerializeField] private Sprite bgImage;
     private Sprite[] puzzles;
     private List<Sprite> gamePuzzles = new List<Sprite>();
     private List<Button> btns = new List<Button>();
@@ -36,8 +39,12 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameObject winAnnouncement;
 
     [SerializeField] private GameObject GameOverScreen;
-    
 
+    private int rows;
+    private int columns;
+    private GameMode currentGameMode;
+
+    [SerializeField] private GridController gridController;
     protected override void Awake()
     {
         base.Awake();
@@ -47,11 +54,11 @@ public class GameController : Singleton<GameController>
         scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
         TimeHasPassed = timePassedPrefab.GetComponent<TimePassed>();
         GameOverScoreAchieved = GameOverScoreAchievedPrefab.GetComponent<ScoreAchieved>();
+       
     }
 
-
     void Start()
-    { 
+    {
         currentScore = 0;
         UpdateScoreText();
 
@@ -63,10 +70,40 @@ public class GameController : Singleton<GameController>
         timer.CountDown();
         winAnnouncement.SetActive(false);
         GameOverScreen.SetActive(false);
+
+        ApplyGameSettings();
     }
 
-   
+    public void SetGameMode(GameMode gameMode, int rows, int columns)
+    {
+        currentGameMode = gameMode;
+        this.rows = rows;
+        this.columns = columns;
+    }
 
+    private void ApplyGameSettings()
+    {
+        if (gridController != null)
+        {
+            if (currentGameMode == GameMode.Casual)
+            {
+                gridController.SetRows(2);
+                gridController.SetColumns(4);
+            }
+            else if (currentGameMode == GameMode.Custom)
+            {
+                if (rows > 0 && columns > 0)
+                {
+                    gridController.SetRows(rows);
+                    gridController.SetColumns(columns);
+                }
+                else
+                {
+                    Debug.LogError("Rows and columns must be greater than 0 for Custom mode.");
+                }
+            }
+        }
+    }
     void GetButton()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("PuzzleButton");
@@ -75,6 +112,7 @@ public class GameController : Singleton<GameController>
         {
             btns.Add(objects[i].GetComponent<Button>());
             btns[i].image.sprite = bgImage;
+            btns[i].name = i.ToString();  // Ensure buttons have unique names
         }
     }
 
@@ -102,7 +140,7 @@ public class GameController : Singleton<GameController>
             btn.onClick.AddListener(() => PickAPuzzle());
         }
     }
-    
+
     void PickAPuzzle()
     {
         if (!firstGuess)
@@ -146,7 +184,6 @@ public class GameController : Singleton<GameController>
             AddScore(10);
 
             CheckIfTheGameisFinished();
-
         }
         else
         {
@@ -156,12 +193,11 @@ public class GameController : Singleton<GameController>
             StartCoroutine(CardRotator.RotateCard(btns[secondGuessIndex], bgImage));
         }
 
-
-
         yield return new WaitForSeconds(.5f);
 
         firstGuess = secondGuess = false;
     }
+
     void AddScore(int score)
     {
         currentScore += score;
@@ -184,11 +220,10 @@ public class GameController : Singleton<GameController>
         }
         Debug.Log("Game Finished!");
         winAnnouncement.SetActive(true);
-        winScreen();
-    }        
-       
+        WinScreen();
+    }
 
-    void winScreen()
+    void WinScreen()
     {
         Time.timeScale = 0f;
         scoreAchieved.ScoreWasAchieved(currentScore);
@@ -199,12 +234,11 @@ public class GameController : Singleton<GameController>
     {
         if (timer.checkGameOver())
         {
-            //Time.timeScale = 0f;
-            if(GameOverScreen != null)
+            if (GameOverScreen != null)
             {
-               GameOverScreen.SetActive(true);
-               GameOverScoreAchieved.ScoreWasAchieved(currentScore);
-            }          
-        }  
+                GameOverScreen.SetActive(true);
+                GameOverScoreAchieved.ScoreWasAchieved(currentScore);
+            }
+        }
     }
 }
