@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puzzleField: {fileID: 903418635}
+  puzzleAmount: 10
   btn: {fileID: 532448073494683645, guid: 6ba21e4c7354b9745a218c607ad7ddfc, type: 3}
 --- !u!4 &606788118
 Transform:
@@ -320,6 +321,7 @@ GameObject:
   - component: {fileID: 903418638}
   - component: {fileID: 903418637}
   - component: {fileID: 903418636}
+  - component: {fileID: 903418639}
   m_Layer: 5
   m_Name: Puzzle Field
   m_TagString: Untagged
@@ -408,6 +410,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 903418634}
   m_CullTransparentMesh: 1
+--- !u!114 &903418639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903418634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0dbc815afa60d34aa881bb10ab4e397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 2
+  columns: 3
 --- !u!1 &1204917727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,6 +1245,10 @@ PrefabInstance:
     - target: {fileID: 1661841984428452514, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100937232316339941, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3616338570210261352, guid: f64a954b3e68e00409dbc6ad1eae38e6, type: 3}
       propertyPath: m_AnchoredPosition.x
