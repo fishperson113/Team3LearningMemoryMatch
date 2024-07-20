@@ -9,6 +9,6 @@ public class ScoreAchieved : MonoBehaviour
 
     public void ScoreWasAchieved(int score)
     {
-        Score_Achieved.text = "Score: " + score.ToString() + "/40";
+        Score_Achieved.text = "Score: " + score.ToString();
     }
 }
