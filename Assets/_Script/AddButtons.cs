@@ -11,7 +11,7 @@ public class AddButtons : MonoBehaviour
     [SerializeField]
     private GameObject btn;
 
-    private void Awake()
+    public void CreatePuzzle()
     {
         GridController gridController = puzzleField.GetComponent<GridController>();
         if (gridController != null)
@@ -20,6 +20,10 @@ public class AddButtons : MonoBehaviour
             int columns = gridController.GetColumns();
 
             puzzleAmount = rows * columns;
+            if(puzzleAmount % 2 != 0)
+            {
+                puzzleAmount++;
+            }
         }
 
         for (int i = 0; i < puzzleAmount; i++)
