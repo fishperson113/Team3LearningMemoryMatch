@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public enum GameMode
-{
-    Casual,
-    Custom
-}
 public class GameController : Singleton<GameController>
 {
     [SerializeField] private Sprite bgImage;
@@ -40,28 +35,33 @@ public class GameController : Singleton<GameController>
 
     [SerializeField] private GameObject GameOverScreen;
 
-    private int rows;
-    private int columns;
-    private GameMode currentGameMode;
+    private AddButtons addButtons;
+    private int rows=2;
+    private int columns=4;
 
     [SerializeField] private GridController gridController;
     protected override void Awake()
     {
         base.Awake();
+        addButtons = GetComponent<AddButtons>();
         puzzles = Resources.LoadAll<Sprite>("Sprites");
+    }
+    public void Init()
+    {
         timer = timerPrefab.GetComponent<Timer>();
         scoreSystem = scorePrefab.GetComponent<ScoreSystem>();
         scoreAchieved = scoreAchievedPrefab.GetComponent<ScoreAchieved>();
         TimeHasPassed = timePassedPrefab.GetComponent<TimePassed>();
         GameOverScoreAchieved = GameOverScoreAchievedPrefab.GetComponent<ScoreAchieved>();
-       
+        ApplyGameSettings();
     }
 
-    void Start()
+    public void StartGame()
     {
         currentScore = 0;
         UpdateScoreText();
 
+        gridController.UpdateGrid();
         GetButton();
         AddListeners();
         AddGamePuzzles();
@@ -70,13 +70,11 @@ public class GameController : Singleton<GameController>
         timer.CountDown();
         winAnnouncement.SetActive(false);
         GameOverScreen.SetActive(false);
-
-        ApplyGameSettings();
+        StartCoroutine(CheckTimeOverRoutine());
     }
 
-    public void SetGameMode(GameMode gameMode, int rows, int columns)
+    public void SetGameMode(int rows, int columns)
     {
-        currentGameMode = gameMode;
         this.rows = rows;
         this.columns = columns;
     }
@@ -85,27 +83,20 @@ public class GameController : Singleton<GameController>
     {
         if (gridController != null)
         {
-            if (currentGameMode == GameMode.Casual)
+            if (rows > 0 && columns > 0)
             {
-                gridController.SetRows(2);
-                gridController.SetColumns(4);
+                gridController.SetRows(rows);
+                gridController.SetColumns(columns);
             }
-            else if (currentGameMode == GameMode.Custom)
+            else
             {
-                if (rows > 0 && columns > 0)
-                {
-                    gridController.SetRows(rows);
-                    gridController.SetColumns(columns);
-                }
-                else
-                {
-                    Debug.LogError("Rows and columns must be greater than 0 for Custom mode.");
-                }
+                Debug.LogError("Rows and columns must be greater than 0 for Custom mode.");
             }
         }
     }
     void GetButton()
     {
+        addButtons.CreatePuzzle();
         GameObject[] objects = GameObject.FindGameObjectsWithTag("PuzzleButton");
 
         for (int i = 0; i < objects.Length; i++)
@@ -230,14 +221,20 @@ public class GameController : Singleton<GameController>
         TimeHasPassed.UpdateTimePassed(timer.getTimePassed());
     }
 
-    void Update()
+    IEnumerator CheckTimeOverRoutine()
     {
-        if (timer.checkGameOver())
+        while (true)
         {
-            if (GameOverScreen != null)
+            yield return new WaitForSeconds(1f);
+
+            if (timer.checkGameOver())
             {
-                GameOverScreen.SetActive(true);
-                GameOverScoreAchieved.ScoreWasAchieved(currentScore);
+                if (GameOverScreen != null)
+                {
+                    GameOverScreen.SetActive(true);
+                    GameOverScoreAchieved.ScoreWasAchieved(currentScore);
+                }
+                yield break;  
             }
         }
     }

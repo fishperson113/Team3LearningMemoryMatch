@@ -1,37 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameModeSelector : MonoBehaviour
 {
-    [SerializeField] private Button casualButton;
-    [SerializeField] private Button customButton;
     [SerializeField] private TMP_InputField rowsInputField;
     [SerializeField] private TMP_InputField columnsInputField;
 
-    private void Start()
+    public void SetCasualMode()
     {
-        casualButton.onClick.AddListener(SetCasualMode);
-        customButton.onClick.AddListener(SetCustomMode);
+        GameController.Instance.SetGameMode(2, 4);
     }
 
-    private void SetCasualMode()
-    {
-        GameController.Instance.SetGameMode(GameMode.Casual, 2, 4);
-        StartGame();
-    }
-
-    private void SetCustomMode()
+    public void SetCustomMode()
     {
         int rows = int.Parse(rowsInputField.text);
         int columns = int.Parse(columnsInputField.text);
-        GameController.Instance.SetGameMode(GameMode.Custom, rows, columns);
-        StartGame();
+        GameController.Instance.SetGameMode( rows, columns);
     }
-
-    private void StartGame()
+    public void Quit()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("MainMenu");
     }
 }
